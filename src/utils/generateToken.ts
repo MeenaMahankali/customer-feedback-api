@@ -5,7 +5,7 @@ dotenv.config();
 const JWT_SECRET: string = process.env.JWT_SECRET || '';
 
 
-export function generateTokenService(id: string, username: string, role: string) {
-    const payload = { id, username, role }
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Example expiration time of 1 hour
+export function generateTokenService(username: string, roles: [string]) {
+    const payload = { username, roles }
+    return jwt.sign(payload, JWT_SECRET); // omitting for now { expiresIn: '1h' }
 }

@@ -19,9 +19,8 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         // Attach the user information to the request object
 
         (req as any).user = {
-            id: decoded.id,
             username: decoded.username,
-            role: decoded.role
+            roles: decoded.roles
         } as User;
         next();
     });
@@ -29,10 +28,9 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
 export const authorizeRoles = (roles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        const userRole: string = (req as any).user.role;
+        const userRoles: [string] = (req as any).user.roles;
 
-        // Check if user has any of the required roles
-        const allowed = roles.includes(userRole);
+        const allowed = userRoles.some(role => roles.includes(role));
 
         if (allowed) {
             next();
